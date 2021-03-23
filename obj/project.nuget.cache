@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "lse/Nt3IbH8ClL2G0HgJ1m+WJyUsU4ecbVpqOVsynxY6Y1P9e2ssy4syuM4Gdl+RZgbk6OfA/tEMc9KfJn8oeg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Mihnea\\source\\repos\\ConsoleApp2\\ConsoleApp2\\ConsoleApp2.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mihnea\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.13\\microsoft.netcore.app.host.win-x64.3.1.13.nupkg.sha512"
+  ],
+  "logs": []
+}
