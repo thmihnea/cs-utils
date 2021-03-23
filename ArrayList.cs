@@ -2,19 +2,19 @@
 
 class ArrayList<T> : List<T>
 {
-    private object[] _elements;
+    private T[] _elements;
     private int _size;
 
     public ArrayList()
     {
         this._size = 0;
-        this._elements = new object[Arrays.DEFAULT_BUFFER];
+        this._elements = new T[Arrays.DEFAULT_BUFFER];
     }
 
     public ArrayList(int buffer)
     {
         this._size = 0;
-        this._elements = new object[buffer];
+        this._elements = new T[buffer];
     }
 
     private bool hasSpace()
@@ -24,7 +24,16 @@ class ArrayList<T> : List<T>
 
     public void add(int index, T element)
     {
-        throw new System.NotImplementedException();
+        if (!this.hasSpace())
+        {
+            this._elements = Arrays.malloc(this._elements);
+        }
+        this._size++;
+        for (int i = this._size - 1; i >= index; i--)
+        {
+            this._elements[i + 1] = this._elements[i];
+        }
+        this._elements[index] = element;
     }
 
     public bool add(T element)
@@ -36,6 +45,7 @@ class ArrayList<T> : List<T>
         try
         {
             this._elements[this._size] = element;
+            this._size++;
             return true;
         } catch (System.Exception e)
         {
@@ -43,83 +53,113 @@ class ArrayList<T> : List<T>
         }
     }
 
-    public bool addAll<T1>(Collection<T1> collection) where T1 : T
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void clear()
     {
-        throw new System.NotImplementedException();
+        this._elements = Arrays.malloc(this._elements, -this._elements.Length + Arrays.DEFAULT_BUFFER);
+        for (int i = 0; i < this._elements.Length; i++)
+        {
+            this._elements[i] = default(T);
+        }
+        this._size = 0;
     }
 
     public bool contains(object obj)
     {
-        throw new System.NotImplementedException();
+        if (this._size == 0) return false;
+        return this.search(obj, 0, this._size - 1) > 0;
     }
 
-    public bool containsAll<T1>(Collection<T1> collection)
+    private int search(object obj, int left, int right)
     {
-        throw new System.NotImplementedException();
+        if (left == right)
+        {
+            return (this._elements[left].Equals(obj)) ? 1 : 0;
+        } 
+        else
+        {
+            int middle = (left + right) / 2;
+            return this.search(obj, left, middle) + this.search(obj, middle + 1, right);
+        }
     }
 
     public T get(int index)
     {
-        throw new System.NotImplementedException();
+        if (index < 0 || index >= this._size) return default(T);
+        return this._elements[index];
     }
 
     public int getSize()
     {
-        throw new System.NotImplementedException();
+        return this._size;
     }
 
     public List<T> getSubList(int fromIndex, int toIndex)
     {
-        throw new System.NotImplementedException();
+        List<T> subList = new ArrayList<T>();
+        for (int i = fromIndex; i <= toIndex; i++)
+        {
+            subList.add(this.get(i));
+        }
+        return subList;
     }
 
     public int indexOf(object obj)
     {
-        throw new System.NotImplementedException();
+        if (this._size == 0) return -1;
+        for (int i = 0; i < this._size - 1; i++)
+        {
+            if (obj.Equals(this._elements[i])) return i;
+        }
+        return -1;
     }
 
     public bool isEmpty()
     {
-        throw new System.NotImplementedException();
+        return this._size == 0;
     }
 
     public int lastIndexOf(object obj)
     {
-        throw new System.NotImplementedException();
+        if (this._size == 0) return -1;
+        for (int i = this._size - 1; i >= 0; i--)
+        {
+            if (obj.Equals(this._elements[i])) return i;
+        }
+        return -1;
     }
 
     public bool remove(int index)
     {
-        throw new System.NotImplementedException();
+        if (index < 0 || index >= this._size) return false;
+        for (int i = index; i < this._size - 1; i++)
+        {
+            this._elements[i] = this._elements[i + 1];
+        }
+        this._elements[this._size - 1] = default(T);
+        this._elements = Arrays.malloc(this._elements, -1);
+        this._size--;
+        return true;
     }
 
     public bool remove(object obj)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public bool removeAll<T1>(Collection<T1> collection)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public bool removeIf<T1>(System.Predicate<T1> filter)
-    {
-        throw new System.NotImplementedException();
+        bool found = false;
+        while (this.indexOf(obj) != -1)
+        {
+            found = true;
+            this.remove(this.indexOf(obj));
+        }
+        return found;
     }
 
     public void set(int index, T element)
     {
-        throw new System.NotImplementedException();
+        if (index < 0 || index >= this._size) return;
+        this._elements[index] = element;
     }
 
     public T[] toArray()
     {
-        throw new System.NotImplementedException();
+        return this._elements;
     }
 }

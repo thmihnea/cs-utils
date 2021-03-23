@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Collections
 {
     interface Collection<E>
     {
+       
         int getSize();
 
         bool isEmpty();
@@ -16,13 +18,33 @@ namespace Collections
 
         bool remove(object obj);
 
-        bool containsAll<T>(Collection<T> collection);
+        bool containsAll<T>(Collection<T> collection)
+        {
+            bool contains_all = false;
+            foreach(T t in collection.toArray())
+            {
+                if (!this.contains(t)) contains_all = true;
+            }
+            return contains_all;
+        }
 
-        bool addAll<T>(Collection<T> collection) where T : E;
+        bool addAll<T>(Collection<T> collection) where T : E
+        {
+            foreach(T t in collection.toArray())
+            {
+                this.add(t);
+            }
+            return true;
+        }
 
-        bool removeAll<T>(Collection<T> collection);
-
-        bool removeIf<T>(Predicate<T> filter);
+        bool removeAll<T>(Collection<T> collection)
+        {
+            foreach(T t in collection.toArray())
+            {
+                this.remove(t);
+            }
+            return true;
+        }
 
         void clear();
     }
